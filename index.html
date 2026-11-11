@@ -1,0 +1,443 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+    <title>Protótipo – App MIPD</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <div class="phone">
+      <div class="top">
+        <button id="menu" onclick="toggleMenu()" aria-label="Abrir menu">☰</button>
+        <button id="back" onclick="back()" aria-label="Voltar">‹</button>
+        <h1 id="ttl">MIPD</h1>
+        <button class="sync" id="sy" onclick="go('sync')">● Online</button>
+        <button id="bell" onclick="toggleNotif()" aria-label="Notificações">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg>
+          <span id="badge">0</span>
+        </button>
+        <button id="theme" onclick="toggleTheme()" aria-label="Alternar tema claro/escuro">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 3a9 9 0 0 1 0 18z" fill="currentColor"/></svg>
+        </button>
+      </div>
+      <main>
+        <section class="s on" id="login">
+          <h2 style="text-align: center">MIPD</h2>
+          <label>E-mail</label><input class="in" value="tecnico@fazenda.com" />
+          <label>Senha</label
+          ><input class="in" type="password" value="123456" />
+          <button class="btn" onclick="go('dash')">Entrar</button>
+          <p style="text-align: center">
+            <a class="l" onclick="toast('Cadastro: tela conceitual')"
+              >Criar conta</a
+            >
+          </p>
+        </section>
+
+        <section class="s" id="dash">
+          <div class="card">
+            <b>Safra 2026/27 · Soja</b>
+            <div class="mut">
+              Fazenda Boa Esperança · Talhão A (50 m × 50 m)
+            </div>
+          </div>
+          <div class="stats">
+            <div><b>1</b><span class="mut">Propriedade</span></div>
+            <div><b>1</b><span class="mut">Talhão</span></div>
+            <div><b id="dn">0</b><span class="mut">Levantamentos</span></div>
+          </div>
+          <button class="btn" onclick="go('amost')">＋ Nova avaliação</button>
+          <h2>Últimas amostragens</h2>
+          <div id="dlast"></div>
+          <a class="l" onclick="loadTest()"
+            >Carregar caso de teste do material técnico</a
+          >
+        </section>
+
+        <section class="s" id="talh">
+          <label>Propriedade</label
+          ><select>
+            <option>Fazenda Boa Esperança</option>
+          </select>
+          <div class="row">
+            <div style="flex: 1">
+              <label>Cultura</label
+              ><select>
+                <option>Soja</option>
+              </select>
+            </div>
+            <div style="flex: 1">
+              <label>Safra</label
+              ><select>
+                <option>2026/27</option>
+              </select>
+            </div>
+          </div>
+          <h2>Talhão A · cenário de referência</h2>
+          <div class="row">
+            <div style="flex: 1">
+              <label>Comprimento (m)</label
+              ><input
+                class="in"
+                id="cl"
+                type="number"
+                value="50"
+                oninput="area()"
+              />
+            </div>
+            <div style="flex: 1">
+              <label>Largura (m)</label
+              ><input
+                class="in"
+                id="lg"
+                type="number"
+                value="50"
+                oninput="area()"
+              />
+            </div>
+          </div>
+          <div class="card">
+            <b id="ar">Área calculada: 2.500 m² (0,25 ha)</b>
+            <div class="mut">
+              Formato quadrado · 1 talhão no cenário inicial · localização por
+              GPS
+            </div>
+          </div>
+          <div class="photo" style="height: auto; padding: 10px">
+            A área do talhão é diferente da área amostrada. Nos índices, A = N ×
+            a (quadros × área do quadro).
+          </div>
+          <button class="btn" onclick="go('amost')">
+            Iniciar amostragem neste talhão
+          </button>
+        </section>
+
+        <section class="s" id="amost">
+          <label>Talhão</label
+          ><select>
+            <option>Talhão A · 50 m × 50 m · 2.500 m²</option>
+          </select>
+          <div class="row">
+            <div style="flex: 1">
+              <label>Data</label
+              ><input class="in" type="date" value="2026-11-10" />
+            </div>
+            <div style="flex: 1">
+              <label>Safra</label
+              ><select>
+                <option>2026/27</option>
+              </select>
+            </div>
+          </div>
+          <div class="row">
+            <div style="flex: 1">
+              <label>Cultura</label
+              ><select>
+                <option>Soja</option>
+              </select>
+            </div>
+            <div style="flex: 1">
+              <label>Estádio da cultura</label
+              ><select>
+                <option>V4</option>
+                <option>R1</option>
+              </select>
+            </div>
+          </div>
+          <label>Área do quadro (fixa após o 1º ponto)</label
+          ><select id="ac">
+            <option value="0.25">0,5 m × 0,5 m = 0,25 m²</option>
+            <option value="1">1 m × 1 m = 1 m²</option>
+          </select>
+          <label>Número planejado de pontos (quadros)</label
+          ><input class="in" id="np" type="number" value="5" min="1" />
+          <label>Responsável</label><input class="in" value="Técnico Demo" />
+          <div class="mut">
+            Distribua os pontos em zigue-zague ou W, evitando as bordas
+            (distância a validar com Agronomia). Plantas contam se a base
+            estiver dentro do quadro; touceira conta como 1 indivíduo.
+          </div>
+          <button class="btn" onclick="startS()">Iniciar amostragem</button>
+        </section>
+
+        <section class="s" id="ponto">
+          <div class="row">
+            <b id="pg"></b><span class="mut" id="pp"></span>
+          </div>
+          <div class="bar" style="margin: 6px 0 12px">
+            <i id="pb" style="width: 0"></i>
+          </div>
+          <div class="photo">📷 Foto superior do quadrado</div>
+          <div class="card">
+            <div class="mut" id="gps"></div>
+            <a
+              class="l"
+              onclick="
+                gm = !gm;
+                drawRegs();
+              "
+              >Alternar GPS / manual</a
+            >
+          </div>
+          <h2>Registros do ponto</h2>
+          <div id="regs"></div>
+          <button
+            class="btn sec"
+            onclick="
+              mode = 'pick';
+              go('ident');
+            "
+          >
+            ＋ Adicionar espécie e estádio
+          </button>
+          <button class="btn sec" id="cb" onclick="clean()"></button>
+          <button class="btn" onclick="savePt()">Salvar ponto</button>
+        </section>
+
+        <section class="s" id="ident">
+          <input
+            class="in"
+            id="srch"
+            placeholder="Buscar por nome ou palavra-chave"
+            oninput="drawSp()"
+          />
+          <span class="chip on" id="g1" onclick="grp('l')">Folha larga</span
+          ><span class="chip" id="g2" onclick="grp('e')">Folha estreita</span>
+          <div class="mut" style="margin-bottom: 8px">
+            1) escolha o grupo · 2) compare as características · 3) confirme com
+            as imagens
+          </div>
+          <div id="sp"></div>
+          <div class="card" id="nid" onclick="addNid()">
+            <b>Outra / não identificada</b>
+            <div class="mut">Foto obrigatória · segue para revisão técnica</div>
+          </div>
+        </section>
+
+        <section class="s" id="ficha"><div id="fh"></div></section>
+
+        <section class="s" id="res"><div id="rh"></div></section>
+
+        <section class="s" id="mapa">
+          <span class="chip on">Todas as espécies</span
+          ><span class="chip">Safra atual</span
+          ><span class="chip">Focos recorrentes</span>
+          <div class="card" style="padding: 6px">
+            <svg
+              id="mp"
+              viewBox="0 0 320 250"
+              width="100%"
+              role="img"
+              aria-label="Mapa do talhão"
+            ></svg>
+          </div>
+          <div class="legend">
+            <div class="legend-title">Legenda</div>
+            <ul>
+              <li><i class="dot" style="background: #2e9e44"></i>Baixa</li>
+              <li><i class="dot" style="background: #e0b000"></i>Média</li>
+              <li><i class="dot" style="background: #d32f2f"></i>Alta</li>
+              <li>
+                <i class="dot" style="border: 2px solid #2e9e44"></i>Quadro limpo
+              </li>
+              <li class="wide">
+                <i class="dash"></i>Foco recorrente (exemplo)
+              </li>
+            </ul>
+          </div>
+        </section>
+
+        <section class="s" id="hist">
+          <span class="chip on">Talhão A</span
+          ><span class="chip">Safra 26/27</span
+          ><span class="chip">Comparar safras</span>
+          <h2>Densidade total mensal (plantas/m², exemplo)</h2>
+          <div class="card">
+            <svg
+              viewBox="0 0 300 152"
+              width="100%"
+              role="img"
+              aria-label="Densidade mensal"
+            >
+              <g fill="var(--g)">
+                <rect x="20" y="104" width="38" height="26" />
+                <rect x="75" y="84" width="38" height="46" />
+                <rect x="130" y="60" width="38" height="70" />
+                <rect x="185" y="34" width="38" height="96" />
+              </g>
+              <rect
+                x="240"
+                y="18"
+                width="38"
+                height="112"
+                fill="var(--g2)"
+                stroke="var(--g)"
+                stroke-dasharray="4 3"
+              />
+              <g font-size="11" fill="var(--mut)" text-anchor="middle">
+                <text x="39" y="100">4</text>
+                <text x="94" y="80">9</text>
+                <text x="149" y="56">16,8</text>
+                <text x="204" y="30">22</text>
+                <text x="259" y="14">?</text>
+                <text x="39" y="148">Jul</text>
+                <text x="94" y="148">Ago</text>
+                <text x="149" y="148">Set</text>
+                <text x="204" y="148">Out</text>
+                <text x="259" y="148">Nov</text>
+              </g>
+            </svg>
+          </div>
+          <div class="card row">
+            <span>Safra anterior (exemplo)</span><b>12,1 plantas/m²</b>
+          </div>
+          <button class="btn" onclick="go('res')">
+            Ver resultados fitossociológicos
+          </button>
+          <button class="btn sec" onclick="toast('PDF exportado (simulação)')">
+            Exportar PDF
+          </button>
+        </section>
+
+        <section class="s" id="manejo">
+          <div class="card">
+            <b>Capina manual</b>
+            <div class="mut">
+              Cultural/mecânica · 20/10 · resultado: redução visível
+            </div>
+          </div>
+          <div class="card">
+            <b>Limpeza de máquinas</b>
+            <div class="mut">Preventiva · 02/11</div>
+          </div>
+          <button
+            class="btn sec"
+            onclick="toast('Registrar prática: formulário conceitual')"
+          >
+            ＋ Registrar prática
+          </button>
+          <div class="warn">
+            Histórico químico: apenas documental. O app não recomenda produtos,
+            doses nem aplicações.
+          </div>
+        </section>
+
+        <section class="s" id="rev"><div id="rv"></div></section>
+
+        <section class="s" id="agenda">
+          <div class="card">
+            <b>Seg, 17/11 · 08:00</b>
+            <div class="mut">Reamostragem do Talhão A</div>
+          </div>
+          <div class="card">
+            <b>Qua, 26/11 · 07:30</b>
+            <div class="mut">Inspeção do Talhão A</div>
+          </div>
+          <button
+            class="btn sec"
+            onclick="toast('Agendar visita: tela conceitual')"
+          >
+            ＋ Agendar visita
+          </button>
+        </section>
+
+        <section class="s" id="estoque">
+          <div class="card row">
+            <span>Molduras 0,5 × 0,5 m</span><b>3 un.</b>
+          </div>
+          <div class="card row"><span>Enxada</span><b>5 un.</b></div>
+          <h2>Custos de atividades</h2>
+          <div class="card row">
+            <span>Capina manual (mão de obra)</span><b>R$ 1.200</b>
+          </div>
+        </section>
+
+        <section class="s" id="ia">
+          <div class="photo">
+            <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+            <span>Fotografar planta</span>
+          </div>
+          <div class="card">
+            <b>Sugestão preliminar: Buva (Conyza spp.)</b>
+            <div class="bar" style="margin: 8px 0">
+              <i style="width: 78%"></i>
+            </div>
+            <div class="mut">
+              Confiança 78%. Incerteza sinalizada: confirmação humana
+              obrigatória.
+            </div>
+          </div>
+          <div class="row">
+            <button
+              class="btn"
+              onclick="toast('Espécie confirmada por humano')"
+            >
+              Confirmar</button
+            ><button
+              class="btn sec"
+              onclick="
+                mode = 'pick';
+                go('ident');
+              "
+            >
+              Corrigir
+            </button>
+          </div>
+          <input class="in" placeholder="Pergunte sobre seus registros…" />
+        </section>
+
+        <section class="s" id="sync">
+          <div class="card">
+            <b id="sst"></b>
+            <div class="mut" id="ssd"></div>
+          </div>
+          <button class="btn" onclick="doSync()">Sincronizar agora</button>
+          <button
+            class="btn sec"
+            onclick="
+              online = !online;
+              upd();
+              show('sync');
+            "
+          >
+            Simular perda/volta da conexão
+          </button>
+          <div class="mut">
+            Registros criados sem internet ficam marcados como pendentes e
+            sincronizam depois.
+          </div>
+        </section>
+      </main>
+      <div class="toast" id="toast"></div>
+      <div class="notif" id="notif"></div>
+      <div class="scrim" id="scrim" onclick="toggleMenu(false)"></div>
+      <nav class="nav" id="nav">
+        <button data-t="dash" onclick="go('dash', 1)">Início</button>
+        <button data-t="talh" onclick="go('talh', 1)">Talhão</button>
+        <button data-t="mapa" onclick="go('mapa', 1)">Mapa</button>
+        <button data-t="hist" onclick="go('hist', 1)">
+          Histórico
+        </button>
+        <button class="sub" onclick="mode = 'cat'; go('ident')">
+          Catálogo de plantas
+        </button>
+        <button class="sub" onclick="go('manejo')">Manejo e prevenção</button>
+        <button class="sub" onclick="go('rev')">Revisão técnica</button>
+        <button class="sub" onclick="go('agenda')">Agenda</button>
+        <button class="sub" onclick="go('estoque')">Estoque e custos</button>
+        <button class="sub" onclick="go('ia')">Assistente de IA</button>
+        <button class="sub" onclick="go('login', 1)">Sair</button>
+      </nav>
+    </div>
+    <script src="js/script.js"></script>
+  </body>
+</html>
